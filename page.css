@@ -1,0 +1,11 @@
+html {
+    font-family: sans-serif;
+    font-size: 75%;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #8a8691;
+}
