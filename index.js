@@ -37,47 +37,61 @@ const example = [
 class Ticket {
     createElem({parent, child = 'div', className}) {
         const elem = document.createElement(child)
+
         if (className) {
             elem.className = className
         }
+
         parent.append(elem)
+
         return elem
     }
 
-    printTicket(data) {
-        const wrapper = this.createElem({parent: document.body, className: 'wrapper'})
-        for (let train = 0; train < data.length; train++) {
-            const card = this.createElem({parent: wrapper, className: 'card'})
-            for (let key in data[train]) {
-                const cell = this.createElem({parent: card, className: 'cell' + ' ' + key})
-                if (key === 'departure' || key === 'destination' ) {
-                    for (let subkey in data[train][key]) {
-                        cell.innerHTML += `<p class='${subkey}'>${data[train][key][subkey]}</p>`
-                    }
-                } else if (key === 'tickets') {
-                    let index = 2
-                    cell.innerHTML += `<div class='subcell-0 header-type'></div>
-                                       <div class='subcell-1 header-seats'>Seats</div>
-                                       <div class='subcell-2 header-price'>Price</div>`
-                    for (let ticket in data[train][key]) {
-                        for (let subkey in data[train][key][ticket]) {
-                            const subcell = this.createElem({parent: cell, className: 'subcell-' + (++index) + ' ' + subkey})
-                            if (subkey === 'price') {
-                                subcell.innerHTML += `from ${data[train][key][ticket][subkey]}`
-                            } else {
-                                subcell.innerHTML += data[train][key][ticket][subkey]
-                            }
-                        }
-                    }
+    fillUpStationCell(cell, value) {
+        Object.keys(value).forEach(key => {
+            cell.innerHTML += `<p class='${key}'>${value[key]}</p>`
+        })
+    }
+
+    fillUpTicketsCell(cell, value) {
+        let index = 2
+
+        cell.innerHTML += `<div class='subcell-0 header-type'></div>
+                           <div class='subcell-1 header-seats'>Seats</div>
+                           <div class='subcell-2 header-price'>Price</div>`
+        value.forEach(item => {
+            Object.keys(item).forEach(key => {
+                const subcell = this.createElem({parent: cell, className: 'subcell-' + (++index) + ' ' + key})
+                if (key === 'price') {
+                    subcell.innerHTML += `from ${item[key]}`
                 } else {
-                    cell.innerHTML += data[train][key]
+                    subcell.innerHTML += item[key]
                 }
-            }
-        }
+            })
+        })
+    }
+
+    printTicket(trains) {
+        const wrapper = this.createElem({parent: document.body, className: 'wrapper'})
+
+        trains.forEach(train => {
+            const card = this.createElem({parent: wrapper, className: 'card'})
+
+            Object.keys(train).forEach(key => {
+                const cell = this.createElem({parent: card, className: 'cell' + ' ' + key})
+
+                if (key === 'departure' || key === 'destination') {
+                    this.fillUpStationCell(cell, train[key])
+                } else if (key === 'tickets') {
+                    this.fillUpTicketsCell(cell, train[key])
+                } else {
+                    cell.innerHTML += train[key]
+                }
+            })
+        })
     }
 }
 
 const rzd = Array(8).fill(example[0])
-// new Ticket().printTicket(rzd)
 const ticket = new Ticket
 ticket.printTicket(rzd)
