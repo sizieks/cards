@@ -57,7 +57,7 @@
 }
 
 .duration {
-    grid-area: duration
+    grid-area: duration;
     color: #06D6A0;
     display: flex;
     align-items: center;
