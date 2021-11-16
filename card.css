@@ -1,5 +1,4 @@
 .wrapper {
-    width: 750px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -17,7 +16,7 @@
     justify-content: center;
 
     margin: 5px;
-    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
 }
 
 .cell {
